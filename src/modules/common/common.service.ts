@@ -22,8 +22,8 @@ export class CommonService {
 
     return this.prismaService.file.create({
       data: {
-        title: body.name ?? file.originalname,
-        url: `http://static.mingyueforever.cn/uploads/${uploadDir}/${file.originalname}`
+        name: body.name ?? file.originalname,
+        path: `http://static.mingyueforever.cn/uploads/${uploadDir}/${file.originalname}`
       },
     })
   }

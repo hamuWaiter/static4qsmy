@@ -7,6 +7,6 @@ export class AppService {
   constructor(private readonly prismaService: PrismaService) {}
 
   sayHello(): string {
-    return 'today is a nice day!';
+    return 'today is a good day!';
   }
 }

@@ -10,13 +10,4 @@ export class AppController {
   async sayHello() {
     return this.appService.sayHello()
   }
-
-  @Post('upload2root')
-  @UseInterceptors(FileInterceptor('file',{
-    dest:'uploads'
-  }))
-  uploadFile(@UploadedFile() file:Express.Multer.File){
-    console.log('file', file);
-    return file.path;
-  }
 }

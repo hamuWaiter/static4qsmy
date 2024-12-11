@@ -8,10 +8,11 @@ import {
   Delete,
   Query,
   UploadedFile,
+  UploadedFiles,
   UseInterceptors
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { FileInterceptor } from '@nestjs/platform-express';
+import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
 import { CommonService } from './common.service';
 import { UploadDto } from './common.dto';
 
@@ -24,7 +25,14 @@ export class CommonController {
 
   @Post('upload')
   @UseInterceptors(FileInterceptor('file'))
-  async uploadFile(@Body() body: UploadDto, @UploadedFile() file: Express.Multer.File) {
-    return await this.commonService.uploadFile(body, file)
+  async uploadFile(@UploadedFile() file: Express.Multer.File) {
+    return await this.commonService.uploadFile(file)
+  }
+
+  // 多文件上传
+  @Post('uploads')
+  @UseInterceptors(FilesInterceptor('files',4))
+  async uploadFiles(@UploadedFiles() files: Express.Multer.File[]) {
+    return await this.commonService.uploadFiles(files)
   }
 }

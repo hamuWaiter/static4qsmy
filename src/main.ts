@@ -6,7 +6,7 @@ import * as os from 'os'
 import process from 'process';
 
 const port = 4000;
-const globalPrefix = 'api';
+const globalPrefix = 'static-api';
 
 async function createApp() {
   const app = await NestFactory.create(AppModule);

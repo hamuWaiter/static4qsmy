@@ -1,4 +1,4 @@
-import { Body, Injectable, UploadedFile } from '@nestjs/common';
+import { Body, Injectable } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
 import path from 'path';
 import fs from 'fs';
@@ -10,21 +10,29 @@ export class CommonService {
 
   // 上传图片到指定目录
   async uploadFile(
-    body: UploadDto,
     file: Express.Multer.File,
   ) {
-    const uploadDir = path.join(__dirname, '..', body.dir ? `uploads/${body.dir}` : 'uploads');
-    if (!fs.existsSync(uploadDir)) {
-      fs.mkdirSync(uploadDir, { recursive: true });
-    }
-    const filePath = path.join(uploadDir, file.originalname);
-    fs.writeFileSync(filePath, file.buffer);
-
     return this.prismaService.file.create({
       data: {
-        name: body.name ?? file.originalname,
-        path: `http://static.mingyueforever.cn/uploads/${uploadDir}/${file.originalname}`
+        name: file.originalname,
+        path: `http://static-server.mingyueforever.cn/uploads/${file.filename}`
       },
     })
+  }
+
+  // 多文件上传
+  async uploadFiles(
+    files: Express.Multer.File[],
+  ) {
+    const res = [];
+    for (let i = 0; i < files.length; i++) {
+      res.push(await this.prismaService.file.create({
+        data: {
+          name: files[i].originalname,
+          path: `http://static-server.mingyueforever.cn/uploads/${files[i].filename}`
+        },
+      }))
+    }
+    return res;
   }
 }

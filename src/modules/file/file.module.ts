@@ -14,7 +14,9 @@ const storage = diskStorage({
     // const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
     // const ext = extname(file.originalname);
     // cb(null, file.fieldname + '-' + uniqueSuffix + ext);
-    cb(null, file.originalname);
+
+    const parseCNName = Buffer.from(file.originalname, 'latin1').toString('utf8');
+    cb(null, parseCNName);
   },
 });
 

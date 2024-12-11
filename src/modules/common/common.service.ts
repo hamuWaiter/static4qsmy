@@ -14,7 +14,7 @@ export class CommonService {
   ) {
     return this.prismaService.file.create({
       data: {
-        name: file.originalname,
+        name: file.filename,
         path: `http://static-server.mingyueforever.cn/uploads/${file.filename}`
       },
     })
@@ -28,7 +28,7 @@ export class CommonService {
     for (let i = 0; i < files.length; i++) {
       res.push(await this.prismaService.file.create({
         data: {
-          name: files[i].originalname,
+          name: files[i].filename,
           path: `http://static-server.mingyueforever.cn/uploads/${files[i].filename}`
         },
       }))

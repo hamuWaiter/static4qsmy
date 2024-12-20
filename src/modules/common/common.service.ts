@@ -10,12 +10,13 @@ export class CommonService {
 
   // 上传图片到指定目录
   async uploadFile(
-    file: Express.Multer.File,
+    { filename, path }: Express.Multer.File,
   ) {
+    // 将本地文件路径转换为URL
     return this.prismaService.file.create({
       data: {
-        name: file.filename,
-        path: `http://static-server.mingyueforever.cn/uploads/${file.filename}`
+        name: filename,
+        path: `http://static-server.mingyueforever.cn/${path.replace(/\\/g, '/')}`
       },
     })
   }
@@ -26,10 +27,11 @@ export class CommonService {
   ) {
     const res = [];
     for (let i = 0; i < files.length; i++) {
+      const { filename, path } = files[i];
       res.push(await this.prismaService.file.create({
         data: {
-          name: files[i].filename,
-          path: `http://static-server.mingyueforever.cn/uploads/${files[i].filename}`
+          name: filename,
+          path: `http://static-server.mingyueforever.cn/${path.replace(/\\/g, '/')}`
         },
       }))
     }
